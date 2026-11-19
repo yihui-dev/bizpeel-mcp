@@ -1,0 +1,27 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.bizpeel/bizpeel",
+  "title": "BizPeel MCP",
+  "description": "Verified startup revenue, traffic, SEO, ads & 700+ growth breakdowns via Streamable HTTP MCP.",
+  "version": "1.0.0",
+  "websiteUrl": "https://bizpeel.com/docs/connect-agent",
+  "repository": {
+    "url": "https://github.com/yihui-dev/bizpeel-mcp",
+    "source": "github"
+  },
+  "icons": [
+    {
+      "src": "https://bizpeel.com/apple-touch-icon.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "180x180"
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://bizpeel.com/mcp"
+    }
+  ]
+}
