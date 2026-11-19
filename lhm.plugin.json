@@ -1,0 +1,589 @@
+{
+  "identifier": "yihui-dev-bizpeel-mcp",
+  "name": "BizPeel MCP",
+  "version": "1.0.0",
+  "author": "Yihui",
+  "authorUrl": "https://github.com/yihui-dev",
+  "category": "tools",
+  "cloudEndpoint": "https://bizpeel.com/mcp",
+  "homepage": "https://bizpeel.com/docs/connect-agent",
+  "icon": "https://raw.githubusercontent.com/yihui-dev/bizpeel-mcp/main/assets/logo-400x400.png",
+  "description": "Remote MCP server for verified startup revenue, traffic sources, SEO keywords, ad creatives, and 700+ competitive growth breakdowns inside Claude, ChatGPT, Claude Code, Codex, and Cursor.",
+  "tags": [
+    "startup-research",
+    "competitive-intelligence",
+    "revenue",
+    "seo",
+    "traffic",
+    "marketing"
+  ],
+  "localizations": [
+    {
+      "locale": "zh-CN",
+      "name": "BizPeel MCP",
+      "description": "远程 MCP 服务：在 Claude、ChatGPT、Claude Code、Codex 与 Cursor 中查询 700+ 出海创业项目的真实收入、流量来源、SEO 关键词、广告素材与竞品深度拆解报告。",
+      "tags": [
+        "竞品分析",
+        "收入数据",
+        "SEO",
+        "流量分析",
+        "创业调研",
+        "营销"
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "name": "export_projects",
+      "description": "Bulk rows for classifying and comparing many companies at once: the card figures plus the newest report version: its id, the date its data runs to (dataAsOf) and a summary. Up to 48 rows a page; each page counts as one MCP read and an empty page is free. Read full reports with get_report.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "billing": {
+            "description": "Facet key (kind \"billing\").",
+            "type": "string"
+          },
+          "category": {
+            "description": "Facet key from list_facets (kind \"category\").",
+            "type": "string"
+          },
+          "customer": {
+            "description": "Facet key (kind \"customer\").",
+            "type": "string"
+          },
+          "direction": {
+            "description": "Facet key from list_facets (kind \"direction\").",
+            "type": "string"
+          },
+          "funding": {
+            "description": "Facet key (kind \"funding\").",
+            "type": "string"
+          },
+          "industry": {
+            "description": "Facet key (kind \"industry\").",
+            "type": "string"
+          },
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          },
+          "maxMrr": {
+            "description": "Whole USD.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "minGrowth": {
+            "description": "Visits growth in percentage points, e.g. 10 for +10%.",
+            "type": "integer"
+          },
+          "minMrr": {
+            "description": "Whole USD.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "minRevenue": {
+            "description": "Revenue in the last 30 days, whole USD.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "minVisits": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "pageSize": {
+            "maximum": 48,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "query": {
+            "description": "Name, domain or description text.",
+            "type": "string"
+          },
+          "shape": {
+            "description": "Facet key (kind \"shape\").",
+            "type": "string"
+          },
+          "sort": {
+            "description": "Descending order. revenue_30d, mrr_growth, mrr_added and mrr rank companies with TrustMRR figures synced in the last 7 days first; popularity is readers on this site over the last 30 days; recent is when the company joined the library, newest first.",
+            "enum": [
+              "mrr_added",
+              "revenue_30d",
+              "mrr_growth",
+              "mrr",
+              "popularity",
+              "recent"
+            ],
+            "type": "string"
+          },
+          "withReportOnly": {
+            "description": "Only companies with a published report.",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      }
+    },
+    {
+      "name": "get_account",
+      "description": "Your plan, MCP limits and balance: reads used and left this month and today (UTC), the per-minute limit, when each resets, and the balance data capabilities are paid from. Reads and the per-minute limit cover report-side calls only; data capability calls are not counted and are paid from the balance. balance.researchBalanceExpiresAt is the next research-balance expiry; balance.resetsAt is its legacy alias. Top-ups never expire. Monthly MCP reads reset at 00:00 UTC on the billing date, while research balance expires at the exact subscription time. The resetRules explain these independent schedules. Free: not counted.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    {
+      "name": "get_capability",
+      "description": "Step 2 of 3: the parameters, output fields and price of one data capability, by id from search_capabilities. Read it before run_capability and tell the user the price when it is more than a few cents. Free: not counted.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "get_metrics",
+      "description": "Monthly time series for one company: visits, revenue and MRR, oldest first, with the source and nature (reported, estimate…) of each point; `partial: true` marks a month that had not ended when it was read. Money is in units of its currency (as on the cards), visits are counts. Counts as one MCP read.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          },
+          "projectId": {
+            "maxLength": 160,
+            "minLength": 1,
+            "type": "string"
+          },
+          "series": {
+            "description": "Defaults to all three.",
+            "items": {
+              "enum": [
+                "visits",
+                "revenue",
+                "mrr"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "projectId"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "get_project",
+      "description": "One company: its card figures and every report version you can read, newest first, each with the date its data runs to (dataAsOf) and a one-line summary. Free: not counted.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          },
+          "projectId": {
+            "maxLength": 160,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "projectId"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "get_report",
+      "description": "Read one report version in full: every chapter, figure, chart table, social post and source the report page shows, as Markdown by default. On a paid plan every published report is complete. Counts as one MCP read; reading the same version again the same UTC day, in full or by chapter, is free.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "description": "markdown (default) is the report as one document. json returns the version facts (data as of, access) and each chapter as its own Markdown, about the same size.",
+            "enum": [
+              "markdown",
+              "json"
+            ],
+            "type": "string"
+          },
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          },
+          "projectId": {
+            "maxLength": 160,
+            "minLength": 1,
+            "type": "string"
+          },
+          "versionId": {
+            "description": "A version id from get_project. Omit for the newest.",
+            "maxLength": 160,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "projectId"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "get_report_chapter",
+      "description": "Read one chapter of a report, to keep a long report out of the context window. Ask with an unknown chapter to get the list of chapter keys (that call is not counted). Counts as one MCP read per report version per UTC day: the other chapters of that version, and the full report, are then free that day.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "chapter": {
+            "description": "Chapter key, e.g. \"summary\". get_report lists every key with its title under \"Chapters\" near the top; an unknown key returns the list (not counted).",
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "format": {
+            "description": "markdown (default) is the report as one document. json returns the version facts (data as of, access) and each chapter as its own Markdown, about the same size.",
+            "enum": [
+              "markdown",
+              "json"
+            ],
+            "type": "string"
+          },
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          },
+          "projectId": {
+            "maxLength": 160,
+            "minLength": 1,
+            "type": "string"
+          },
+          "versionId": {
+            "description": "A version id from get_project. Omit for the newest.",
+            "maxLength": 160,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "projectId",
+          "chapter"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "get_trending",
+      "description": "The daily revenue rankings (收入榜) the site publishes at 16:00 UTC for the UTC day before: fastest growing (the period before earned at least $500 over 7 days or $1,000 over 30, and the last period at least 20% more; ranked by growth) or top earners (ranked by revenue), over the last 7 or 30 days, optionally newcomers only. Narrow it by direction or by revenue in the period: the filters search the whole list, not only the 50 the page shows. Every company comes with its rank on the whole list, its revenue in both periods, each day of both periods (daily.usd, oldest first from daily.from), and how many recent days earned anything and what share its best day made — steady earners against one-off spikes. includeNews adds the day's news (本期看点): first-time milestones, best days ever, the biggest gains (30% or more), the fastest grower over 30 days and a newcomer still growing. Counts as one MCP read; an empty result is free.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "days": {
+            "description": "The period compared with the one before it. Defaults to 7.",
+            "enum": [
+              7,
+              30
+            ],
+            "type": "integer"
+          },
+          "direction": {
+            "description": "Facet key from list_facets (kind \"direction\").",
+            "type": "string"
+          },
+          "includeNews": {
+            "type": "boolean"
+          },
+          "limit": {
+            "description": "Companies to return, top first. Defaults to 20.",
+            "maximum": 50,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "list": {
+            "description": "Defaults to fastest_growing.",
+            "enum": [
+              "fastest_growing",
+              "top_earners"
+            ],
+            "type": "string"
+          },
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          },
+          "maxRevenue": {
+            "description": "Revenue in the last `days` days, whole USD.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "minRevenue": {
+            "description": "Revenue in the last `days` days, whole USD.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "newcomersOnly": {
+            "description": "Only companies that started earning within the last three months.",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      }
+    },
+    {
+      "name": "list_facets",
+      "description": "The filter vocabularies (direction, category, shape, customer, industry, billing, funding) as key and label pairs. Free: not counted.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    {
+      "name": "run_capability",
+      "description": "Step 3 of 3: call a data capability with the parameters get_capability describes. Charges a data fee to the balance for what the call actually used; when nothing is found it is charged only if the supplier charged for looking. It is not counted as an MCP read and has no per-minute limit; the balance and the daily spending cap are its only limits. A failed or refused call is not charged. The result ends with what this call cost and the balance left. Do not repeat a call that succeeded: every call is charged again.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "description": "The capability id, e.g. \"traffic-overview\".",
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          },
+          "params": {
+            "description": "The capability's own parameters, as get_capability lists them.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "search_capabilities",
+      "description": "Find data capabilities: live data from outside suppliers about any website (search rankings, keywords, traffic, where visitors come from), beyond what BizPeel reports hold. Step 1 of 3: find a capability here, read its parameters and price with get_capability, then call it with run_capability. Search by words or by category; no arguments lists everything. Free: not counted.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "description": "A category id from an earlier result.",
+            "type": "string"
+          },
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          },
+          "query": {
+            "description": "What you are looking for, e.g. \"traffic\", \"keywords\", \"流量\".",
+            "maxLength": 120,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    {
+      "name": "search_projects",
+      "description": "Search the library of researched companies. Returns one page of compact cards: revenue, MRR, visits, growth, category and a link. Each page of results counts as one MCP read; an empty page is free.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "billing": {
+            "description": "Facet key (kind \"billing\").",
+            "type": "string"
+          },
+          "category": {
+            "description": "Facet key from list_facets (kind \"category\").",
+            "type": "string"
+          },
+          "customer": {
+            "description": "Facet key (kind \"customer\").",
+            "type": "string"
+          },
+          "direction": {
+            "description": "Facet key from list_facets (kind \"direction\").",
+            "type": "string"
+          },
+          "funding": {
+            "description": "Facet key (kind \"funding\").",
+            "type": "string"
+          },
+          "industry": {
+            "description": "Facet key (kind \"industry\").",
+            "type": "string"
+          },
+          "locale": {
+            "description": "Language of the answer: \"zh\" for Chinese, \"en\" for English. Pass \"zh\" whenever the user writes in Chinese. Defaults to the language the user connected BizPeel in.",
+            "enum": [
+              "en",
+              "zh"
+            ],
+            "type": "string"
+          },
+          "maxMrr": {
+            "description": "Whole USD.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "minGrowth": {
+            "description": "Visits growth in percentage points, e.g. 10 for +10%.",
+            "type": "integer"
+          },
+          "minMrr": {
+            "description": "Whole USD.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "minRevenue": {
+            "description": "Revenue in the last 30 days, whole USD.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "minVisits": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "pageSize": {
+            "maximum": 25,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "query": {
+            "description": "Name, domain or description text.",
+            "type": "string"
+          },
+          "shape": {
+            "description": "Facet key (kind \"shape\").",
+            "type": "string"
+          },
+          "sort": {
+            "description": "Descending order. revenue_30d, mrr_growth, mrr_added and mrr rank companies with TrustMRR figures synced in the last 7 days first; popularity is readers on this site over the last 30 days; recent is when the company joined the library, newest first.",
+            "enum": [
+              "mrr_added",
+              "revenue_30d",
+              "mrr_growth",
+              "mrr",
+              "popularity",
+              "recent"
+            ],
+            "type": "string"
+          },
+          "withReportOnly": {
+            "description": "Only companies with a published report.",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      }
+    }
+  ],
+  "resources": [
+    {
+      "uriTemplate": "bizpeel://report/{projectId}",
+      "name": "Report (newest version)",
+      "description": "The newest report version of one company, as Markdown.",
+      "mimeType": "text/markdown"
+    },
+    {
+      "uriTemplate": "bizpeel://report/{projectId}/{versionId}",
+      "name": "Report version",
+      "description": "One report version, as Markdown.",
+      "mimeType": "text/markdown"
+    }
+  ],
+  "prompts": [
+    {
+      "name": "compare_projects",
+      "description": "Compare several companies from their BizPeel reports."
+    },
+    {
+      "name": "classify_projects",
+      "description": "Group a set of companies by criteria you choose."
+    }
+  ]
+}
